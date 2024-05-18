@@ -70,9 +70,29 @@ exports.updateCategory = async (req, res, next) => {
 
     if (!id) throw new Error("No id provided.");
 
-    const category = await CategoryModel.findByIdAndUpdate(id, { ...req.body });
+    delete req.body._id;
 
+    const inventoryDoc = await InventoryModel.find();
+
+    const category = await CategoryModel.findById(id);
     if (!category) throw new Error("No category find with the provided id");
+
+    const categoryIndex = inventoryDoc[0].categories.findIndex(
+      (el) => el.title === category.title
+    );
+
+    if (categoryIndex < 0) throw new Error("Failed to find inventory doc");
+
+    await CategoryModel.findByIdAndUpdate(id, {
+      ...req.body,
+    });
+
+    inventoryDoc[0].categories[categoryIndex] = {
+      ...req.body,
+    };
+
+    console.log(inventoryDoc[0].categories[categoryIndex]);
+    await inventoryDoc[0].save();
 
     res.status(200).json({
       status: "success",

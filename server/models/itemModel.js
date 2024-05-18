@@ -33,7 +33,7 @@ const ItemSchema = new mongoose.Schema({
   },
   image_url: {
     type: String,
-    default: "https://placehold.co/800?text=Image&font=roboto",
+    default: "https://placehold.co/400?text=Image&font=roboto",
   },
 
   category_ref: {

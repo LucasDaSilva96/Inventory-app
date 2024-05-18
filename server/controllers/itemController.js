@@ -1,5 +1,6 @@
 const { CategoryModel } = require("../models/categoryModel");
 const { ItemModel } = require("../models/itemModel");
+const { keepInventoryDocUpdated } = require("../utils/updateInventoryDoc");
 
 exports.createNewItem = async (req, res, next) => {
   try {
@@ -19,6 +20,7 @@ exports.createNewItem = async (req, res, next) => {
     categoryDoc.items.push(item);
 
     await categoryDoc.save();
+    await keepInventoryDocUpdated(categoryDoc);
 
     res.status(201).json({
       status: "success",
@@ -79,7 +81,27 @@ exports.updateItem = async (req, res, next) => {
 
     if (!product_code) throw new Error("No product code provided");
 
+    const item = await ItemModel.findOne({ product_code });
+    if (!item) throw new Error("No item found with the provided product code");
+
+    const category = await CategoryModel.findById(item.category_ref);
+
+    const categoryIndex = category.items.findIndex(
+      (el) => el.product_code === item.product_code
+    );
+
+    if (categoryIndex < 0)
+      throw new Error("No category found with the provided product code");
+
+    category.items[categoryIndex] = {
+      ...category.items[categoryIndex].toObject(),
+      ...req.body,
+    };
+
+    await category.save();
+
     await ItemModel.findOneAndUpdate({ product_code }, { ...req.body });
+    await keepInventoryDocUpdated(category);
 
     res.status(201).json({
       status: "success",
@@ -107,10 +129,12 @@ exports.deleteItem = async (req, res, next) => {
       throw new Error("No category document found with the provided id");
 
     categoryDoc.items = categoryDoc.items.filter(
-      (el) => el.product_code === item.product_code
+      (item) => item.product_code !== product_code
     );
 
     await categoryDoc.save();
+
+    await keepInventoryDocUpdated(categoryDoc);
 
     res.status(201).json({
       status: "success",

@@ -5,6 +5,7 @@ const CategorySchema = new mongoose.Schema({
   title: {
     type: String,
     required: [true, "A category must have a title."],
+    unique: [true, "Category already in the database"],
   },
   items: [ItemSchema],
   // TODO
@@ -20,7 +21,7 @@ const CategorySchema = new mongoose.Schema({
 
   image_url: {
     type: String,
-    default: "https://placehold.co/800?text=Image&font=roboto",
+    default: "https://placehold.co/400?text=Image&font=roboto",
   },
   created_at: {
     type: Date,

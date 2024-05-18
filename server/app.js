@@ -1,5 +1,6 @@
 const app = require("express")();
 const compression = require("compression");
+const express = require("express");
 const cors = require("cors");
 const itemRoute = require("./routes/itemRoutes");
 const categoryRoute = require("./routes/categoryRoutes");
