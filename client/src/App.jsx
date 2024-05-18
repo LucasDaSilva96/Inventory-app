@@ -1,35 +1,17 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useSelector } from "react-redux";
+import Header from "./components/Header";
+import { getTheme } from "./redux/theme";
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const theme = useSelector(getTheme);
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <main
+      className={`${theme} w-screen h-screen text-foreground bg-background py-2 px-2`}
+    >
+      <Header />
+      <h1>Hello</h1>
+    </main>
+  );
 }
 
-export default App
+export default App;
