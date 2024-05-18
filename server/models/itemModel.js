@@ -41,6 +41,11 @@ const ItemSchema = new mongoose.Schema({
     ref: "category",
     required: [true, "A item must belong to a category"],
   },
+
+  created_at: {
+    type: Date,
+    default: Date.now(),
+  },
 });
 
 const ItemModel = mongoose.model("item", ItemSchema);
