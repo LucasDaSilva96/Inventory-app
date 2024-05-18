@@ -17,7 +17,6 @@ app.use(
 
 // Enable CORS for all routes
 app.use(cors());
-app.options("*", cors());
 
 // Compress responses for improved performance
 app.use(compression());
