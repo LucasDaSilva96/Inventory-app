@@ -6,12 +6,18 @@ import "./index.css";
 import { Provider } from "react-redux";
 import store from "./redux/store.js";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ItemsPage from "./pages/ItemsPage.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    children: [],
+    children: [
+      {
+        index: true,
+        element: <ItemsPage />,
+      },
+    ],
   },
 ]);
 

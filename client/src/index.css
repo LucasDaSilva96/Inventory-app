@@ -27,3 +27,15 @@ body {
 a {
   text-decoration: none !important;
 }
+.category__box {
+  border: 2px solid transparent;
+  padding: 10px;
+  border-radius: 10px;
+  transition: transform 0.3s linear;
+}
+
+.category__box:hover {
+  border-color: #17c964d3;
+  transform: translateY(-5px);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}

@@ -8,10 +8,22 @@ function App() {
   const theme = useSelector(getTheme);
   return (
     <main
-      className={`${theme} relative w-screen h-screen text-foreground bg-background py-1 px-1`}
+      className={`${theme} w-screen h-screen text-foreground bg-background py-1 px-1`}
     >
       <Header />
-      <div className="flex w-full h-full">
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "20px",
+          maxWidth: "1600px",
+          overflowY: "auto",
+          flexWrap: "wrap",
+          justifyContent: "space-around",
+          maxHeight: "98dvh",
+          paddingBottom: "40px",
+        }}
+      >
         <SideBar />
         <Outlet />
       </div>
