@@ -14,6 +14,7 @@ function DarkModeToggle() {
 
   return (
     <Switch
+      style={{ marginLeft: "auto" }}
       isSelected={theme === "light"}
       size="lg"
       color="success"
