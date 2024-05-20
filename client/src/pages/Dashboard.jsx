@@ -1,4 +1,12 @@
-import BarChartComponent from "../components/BarChart";
+import DashboardBox from "../components/DashboardBox";
+import {
+  formateCategoryItemsAmount,
+  formateCategoryItemsWorth,
+} from "../utils/formatCategoriesData";
+import {
+  formateItemAmount,
+  formateItemTotalWorth,
+} from "../utils/formatItemsData";
 
 const fakeItems = [
   {
@@ -115,22 +123,103 @@ const CATEGORIES = [
     total_category_worth: 0,
     image_url: "https://placehold.co/400?text=Image&font=roboto",
   },
+  {
+    title: "Computer",
+    items: [],
+    category_items_amount: 100,
+    total_category_worth: 10000,
+    image_url: "https://placehold.co/400?text=Image&font=roboto",
+  },
+
+  {
+    title: "Phone",
+    items: [],
+    category_items_amount: 20,
+    total_category_worth: 500,
+    image_url: "https://placehold.co/400?text=Image&font=roboto",
+  },
+
+  {
+    title: "Keyboard",
+    items: [],
+    category_items_amount: 0,
+    total_category_worth: 0,
+    image_url: "https://placehold.co/400?text=Image&font=roboto",
+  },
+  {
+    title: "Computer1",
+    items: [],
+    category_items_amount: 100,
+    total_category_worth: 10000,
+    image_url: "https://placehold.co/400?text=Image&font=roboto",
+  },
+
+  {
+    title: "Phone1",
+    items: [],
+    category_items_amount: 20,
+    total_category_worth: 500,
+    image_url: "https://placehold.co/400?text=Image&font=roboto",
+  },
+
+  {
+    title: "Keyboard1",
+    items: [],
+    category_items_amount: 0,
+    total_category_worth: 0,
+    image_url: "https://placehold.co/400?text=Image&font=roboto",
+  },
 ];
 function Dashboard() {
   return (
     <div
       style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(400px, 500px))",
+        display: "flex",
+        gap: "20px",
+        flexWrap: "wrap",
         width: "100%",
-        height: "100%",
+        maxHeight: "90dvh",
         overflowY: "auto",
-        padding: "10px 0",
+        paddingTop: "10px",
+        paddingBottom: "20px",
       }}
     >
-      <BarChartComponent dataObj={CATEGORIES} />
+      <div
+        style={{
+          display: "flex",
+          gap: "20px",
+          flexWrap: "wrap",
+          maxWidth: "600px",
+          maxHeight: "80dvh",
+          overflowY: "auto",
+          paddingTop: "10px",
+          paddingBottom: "20px",
+        }}
+      >
+        <DashboardBox
+          data={formateCategoryItemsAmount(CATEGORIES)}
+          fillColor={"#0088FE"}
+          h1={"Category items amount"}
+        />
+        <DashboardBox
+          data={formateCategoryItemsWorth(CATEGORIES)}
+          fillColor={"#00C49F"}
+          h1={"Category items total worth"}
+        />
 
-      <BarChartComponent dataObj={CATEGORIES} />
+        <DashboardBox
+          data={formateItemAmount(fakeItems)}
+          fillColor={"#FFBB28"}
+          h1={"Items total amount"}
+        />
+
+        <DashboardBox
+          data={formateItemTotalWorth(fakeItems)}
+          fillColor={"#FF8042"}
+          h1={"Items total worth"}
+        />
+      </div>
+      <h1>Hello</h1>
     </div>
   );
 }

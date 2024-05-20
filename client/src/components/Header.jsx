@@ -4,17 +4,16 @@ import { NavLink } from "react-router-dom";
 
 function Header() {
   return (
-    <nav
-      id="navigation__container"
-      className="w-screen flex items-center gap-4 drop-shadow-lg py-1 px-2"
-    >
-      <NavLink to="/" end>
-        Dashboard
-      </NavLink>
+    <nav id="navigation__container" className=" drop-shadow-lg">
+      <div className="flex items-center gap-4">
+        <NavLink to="/" end>
+          Dashboard
+        </NavLink>
 
-      <NavLink to="/inventory" end>
-        Inventory
-      </NavLink>
+        <NavLink to="/inventory" end>
+          Inventory
+        </NavLink>
+      </div>
       <DarkModeToggle />
     </nav>
   );

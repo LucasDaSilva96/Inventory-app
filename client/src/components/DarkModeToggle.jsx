@@ -14,8 +14,12 @@ function DarkModeToggle() {
 
   return (
     <Switch
-      style={{ marginLeft: "auto" }}
       isSelected={theme === "light"}
+      style={{
+        position: "absolute",
+        right: "15px",
+        top: "15px",
+      }}
       size="lg"
       color="success"
       startContent={<MdOutlineWbSunny />}
