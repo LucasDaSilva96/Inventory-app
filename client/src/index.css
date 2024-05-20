@@ -39,3 +39,22 @@ a {
   transform: translateY(-5px);
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
+
+#navigation__container {
+  padding: 10px;
+  border-bottom: 1px solid #71717a4d;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+#navigation__container a {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+#navigation__container a.active {
+  background-color: #71717a3d;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-color: #17c964d3;
+}

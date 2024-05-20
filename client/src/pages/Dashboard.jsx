@@ -1,4 +1,4 @@
-import ItemBox from "../components/ItemBox";
+import BarChartComponent from "../components/BarChart";
 
 const fakeItems = [
   {
@@ -68,24 +68,71 @@ const fakeItems = [
   },
 ];
 
-function ItemsPage() {
+const CATEGORIES = [
+  {
+    title: "Computer",
+    items: [],
+    category_items_amount: 100,
+    total_category_worth: 10000,
+    image_url: "https://placehold.co/400?text=Image&font=roboto",
+  },
+
+  {
+    title: "Phone",
+    items: [],
+    category_items_amount: 20,
+    total_category_worth: 500,
+    image_url: "https://placehold.co/400?text=Image&font=roboto",
+  },
+
+  {
+    title: "Keyboard",
+    items: [],
+    category_items_amount: 0,
+    total_category_worth: 0,
+    image_url: "https://placehold.co/400?text=Image&font=roboto",
+  },
+  {
+    title: "Computer1",
+    items: [],
+    category_items_amount: 100,
+    total_category_worth: 10000,
+    image_url: "https://placehold.co/400?text=Image&font=roboto",
+  },
+
+  {
+    title: "Phone1",
+    items: [],
+    category_items_amount: 20,
+    total_category_worth: 500,
+    image_url: "https://placehold.co/400?text=Image&font=roboto",
+  },
+
+  {
+    title: "Keyboard1",
+    items: [],
+    category_items_amount: 0,
+    total_category_worth: 0,
+    image_url: "https://placehold.co/400?text=Image&font=roboto",
+  },
+];
+function Dashboard() {
   return (
     <div
-      className="flex flex-col"
       style={{
-        gap: "20px",
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fill, minmax(400px, 500px))",
+        width: "100%",
         height: "100%",
-        maxHeight: "450px",
         overflowY: "auto",
-        alignSelf: "end",
         padding: "10px 0",
       }}
     >
-      {fakeItems.map((item) => (
-        <ItemBox item={item} key={item._id} />
-      ))}
+      <BarChartComponent dataObj={CATEGORIES} />
+
+      <BarChartComponent dataObj={CATEGORIES} />
     </div>
   );
 }
 
-export default ItemsPage;
+export default Dashboard;

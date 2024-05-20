@@ -64,16 +64,7 @@ function SideBar() {
   };
 
   return (
-    <aside className="px-2 flex flex-col gap-3 h-full">
-      <h1
-        style={{
-          fontSize: "3.2rem",
-          fontWeight: "350",
-        }}
-      >
-        Inventory
-      </h1>
-
+    <aside className="px-2 flex flex-col gap-3 h-full shadow-sm py-1 rounded-md">
       <div
         className="relative flex items-center py-1"
         style={{
@@ -83,7 +74,7 @@ function SideBar() {
         <CiSearch fontSize={32} />
         <input
           placeholder="Search for category"
-          className="text-center bg-transparent outline-none text-base"
+          className="text-center bg-transparent outline-none text-base w-full"
           onChange={handleSearchCategory}
         />
       </div>
@@ -93,9 +84,9 @@ function SideBar() {
           display: "flex",
           flexDirection: "column",
           gap: "15px",
-          maxHeight: "375px",
-          overflowY: "auto",
           padding: "10px 0",
+          maxHeight: "65dvh",
+          overflowY: "auto",
         }}
       >
         {categories.map((category) => (

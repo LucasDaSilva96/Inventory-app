@@ -3,6 +3,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import { MdOutlineInventory2 } from "react-icons/md";
 import { Badge } from "@nextui-org/react";
 import { MdAttachMoney } from "react-icons/md";
+import { Button } from "@nextui-org/react";
 
 function SideCategoryBox({ category }) {
   return (
@@ -13,7 +14,7 @@ function SideCategoryBox({ category }) {
         alignItems: "center",
         gap: "10px",
         cursor: "pointer",
-        width: "350px",
+        width: "100%",
         justifyContent: "space-between",
       }}
     >
@@ -51,6 +52,14 @@ function SideCategoryBox({ category }) {
       <div className="flex items-center">
         <MdAttachMoney fontSize={24} />
         <span>{category.total_category_worth}</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <Button color="primary" size="sm">
+          Edit
+        </Button>
+        <Button color="danger" size="sm">
+          Delete
+        </Button>
       </div>
     </article>
   );
