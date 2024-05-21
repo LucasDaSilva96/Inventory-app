@@ -1,4 +1,5 @@
 import DashboardBox from "../components/DashboardBox";
+import DashboardItemsTable from "../components/DashboardItemsTable";
 import {
   formateCategoryItemsAmount,
   formateCategoryItemsWorth,
@@ -174,14 +175,15 @@ function Dashboard() {
   return (
     <div
       style={{
-        display: "flex",
-        gap: "20px",
-        flexWrap: "wrap",
         width: "100%",
         maxHeight: "90dvh",
         overflowY: "auto",
         paddingTop: "10px",
         paddingBottom: "20px",
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(625px, 1fr))",
+        gap: "1em",
+        alignItems: "start",
       }}
     >
       <div
@@ -189,10 +191,9 @@ function Dashboard() {
           display: "flex",
           gap: "20px",
           flexWrap: "wrap",
-          maxWidth: "600px",
+          width: "100%",
           maxHeight: "80dvh",
           overflowY: "auto",
-          paddingTop: "10px",
           paddingBottom: "20px",
         }}
       >
@@ -219,7 +220,7 @@ function Dashboard() {
           h1={"Items total worth"}
         />
       </div>
-      <h1>Hello</h1>
+      <DashboardItemsTable data={fakeItems} />
     </div>
   );
 }
