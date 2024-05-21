@@ -9,6 +9,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import InventoryPage from "./pages/Inventory.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import { Toaster } from "react-hot-toast";
+import Charts from "./pages/Charts.jsx";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "inventory",
         element: <InventoryPage />,
+      },
+      {
+        path: "chart",
+        element: <Charts />,
       },
     ],
   },
