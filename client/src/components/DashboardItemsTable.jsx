@@ -97,10 +97,6 @@ export default function DashboardItemsTable({ data }) {
     switch (columnKey) {
       case "image_url":
         return (
-          // <User
-          //   avatarProps={{ radius: "lg", src: data.image_url }}
-          //   description={data.title}
-          // ></User>
           <Avatar
             src={data.image_url}
             alt={data.title}
@@ -268,7 +264,6 @@ export default function DashboardItemsTable({ data }) {
       }}
     >
       <Table
-        isStriped
         topContent={topContent}
         topContentPlacement="outside"
         aria-label="Items table"

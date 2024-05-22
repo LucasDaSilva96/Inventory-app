@@ -5,9 +5,10 @@ import { Badge } from "@nextui-org/react";
 import { MdAttachMoney } from "react-icons/md";
 import { Button } from "@nextui-org/react";
 
-function SideCategoryBox({ category }) {
+function SideCategoryBox({ category, setSelectedCategory, selectedCategory }) {
   return (
     <article
+      onClick={() => setSelectedCategory(category)}
       className="category__box"
       style={{
         display: "flex",
@@ -16,6 +17,7 @@ function SideCategoryBox({ category }) {
         cursor: "pointer",
         width: "100%",
         justifyContent: "space-between",
+        borderColor: selectedCategory?._id === category._id ? "#17c964d3" : "",
       }}
     >
       <LazyLoadImage
