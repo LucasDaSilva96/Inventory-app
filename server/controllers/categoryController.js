@@ -4,6 +4,7 @@ const { ItemModel } = require("../models/itemModel");
 
 exports.createNewCategory = async (req, res, next) => {
   try {
+    console.log(req.body);
     const category = await CategoryModel.create({ ...req.body });
 
     const inventory = await InventoryModel.find();
