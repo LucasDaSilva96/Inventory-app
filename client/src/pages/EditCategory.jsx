@@ -57,6 +57,8 @@ function EditCategory() {
               <input
                 type="file"
                 onChange={handleImageChange}
+                name="image_url"
+                accept=".png, .jpg"
                 style={{
                   padding: "10px 0",
                   maxWidth: "200px",

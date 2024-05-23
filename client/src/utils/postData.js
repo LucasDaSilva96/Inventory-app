@@ -5,6 +5,11 @@ import { toast } from "react-hot-toast";
 export const createNewCategory = async (data) => {
   const toastId = toast.loading("Loading...");
   try {
+    if (data.image_url) {
+      const formData = new FormData();
+      formData.append("image_url", data.image_url);
+    }
+
     await axios.post(BASE_URL + "category/create", data);
     toast.dismiss(toastId);
     toast.success("Successfully created new category");
