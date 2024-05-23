@@ -7,15 +7,31 @@ const {
   getSpecificCategory,
   updateCategory,
   deleteCategory,
-} = require("../controllers/categoryController");
+  createNewItem,
+  updateItem,
+  getAllItems,
+  getSpecificItem,
+  deleteItem,
+} = require("../controllers/inventoryController");
 
-router.get("/", getAllCategories);
-router.get("/:id", getSpecificCategory);
+// ** Category
+router.get("/categories", getAllCategories);
+router.get("/categories/:id", getSpecificCategory);
 
-router.post("/create", createNewCategory);
+router.post("/category/create", createNewCategory);
 
-router.patch("/:id/update", updateCategory);
+router.patch("/category/:id/update", updateCategory);
 
-router.delete("/:id/delete", deleteCategory);
+router.delete("/category/:id/delete", deleteCategory);
+
+// ** Items
+router.get("/items", getAllItems);
+router.get("/item/:id/:product_code", getSpecificItem);
+
+router.post("/item/:id/create", createNewItem);
+
+router.patch("/item/:id/:product_code/update", updateItem);
+
+router.delete("/item/:id/:product_code/delete", deleteItem);
 
 module.exports = router;

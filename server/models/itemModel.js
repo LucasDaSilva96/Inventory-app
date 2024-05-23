@@ -36,21 +36,12 @@ const ItemSchema = new mongoose.Schema({
     default: "https://placehold.co/400?text=Image&font=roboto",
   },
 
-  category_ref: {
-    type: mongoose.Schema.ObjectId,
-    ref: "category",
-    required: [true, "A item must belong to a category"],
-  },
-
   created_at: {
     type: Date,
     default: Date.now(),
   },
 });
 
-const ItemModel = mongoose.model("item", ItemSchema);
-
 module.exports = {
   ItemSchema,
-  ItemModel,
 };

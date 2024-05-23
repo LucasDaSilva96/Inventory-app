@@ -2,9 +2,7 @@ const app = require("express")();
 const compression = require("compression");
 const express = require("express");
 const cors = require("cors");
-const itemRoute = require("./routes/itemRoutes");
 const categoryRoute = require("./routes/categoryRoutes");
-const inventoryRoute = require("./routes/inventoryRoutes");
 
 // Trust proxy for secure deployment environments
 app.enable("trust proxy");
@@ -29,8 +27,6 @@ app.use(compression());
 app.use(express.urlencoded({ extended: true }));
 
 // ** Routes ↓
-app.use("/items", itemRoute);
-app.use("/category", categoryRoute);
-app.use("/inventory", inventoryRoute);
+app.use("/api", categoryRoute);
 
 module.exports = app;
