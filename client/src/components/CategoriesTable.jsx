@@ -4,23 +4,16 @@ import { useState } from "react";
 import { Button } from "@nextui-org/react";
 import { useQueryClient } from "@tanstack/react-query";
 import ItemBox from "./ItemBox";
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  useDisclosure,
-} from "@nextui-org/react";
-import AddNewCategoryForm from "./AddNewCategoryForm";
+import { useNavigate } from "react-router-dom";
 
 function CategoriesTable() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const navigate = useNavigate();
+
   const queryClient = useQueryClient();
   const CATEGORIES = queryClient.getQueryData(["categories"]);
   const ITEMS = queryClient.getQueryData(["items"]);
   const [categories, setCategories] = useState(CATEGORIES);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[0]);
 
   const handleSearchCategory = (e) => {
     const result = CATEGORIES.filter((category) =>
@@ -67,10 +60,9 @@ function CategoriesTable() {
           ))}
         </div>
 
-        <Button color="success" onPress={onOpen}>
+        <Button color="success" onPress={() => navigate("/addCategory")}>
           Add category
         </Button>
-        <AddNewCategoryForm isOpen={isOpen} onOpenChange={onOpenChange} />
       </aside>
       <div
         style={{
@@ -81,11 +73,24 @@ function CategoriesTable() {
           overflowY: "auto",
         }}
       >
-        {selectedCategory?.items
-          ? selectedCategory.items.map((item) => (
-              <ItemBox key={item._id} item={item} />
-            ))
-          : null}
+        {selectedCategory && selectedCategory.items.length > 0 ? (
+          selectedCategory.items.map((item) => (
+            <ItemBox key={item._id} item={item} />
+          ))
+        ) : (
+          <div
+            style={{
+              minWidth: "375px",
+              width: "500px",
+              height: "50dvh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <h1 className=" text-lg italic ">No items found</h1>
+          </div>
+        )}
       </div>
     </section>
   );

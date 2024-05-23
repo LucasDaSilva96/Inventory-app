@@ -4,8 +4,10 @@ import { MdOutlineInventory2 } from "react-icons/md";
 import { Badge } from "@nextui-org/react";
 import { MdAttachMoney } from "react-icons/md";
 import { Button } from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
 
 function SideCategoryBox({ category, setSelectedCategory, selectedCategory }) {
+  const navigate = useNavigate();
   return (
     <article
       onClick={() => setSelectedCategory(category)}
@@ -56,7 +58,11 @@ function SideCategoryBox({ category, setSelectedCategory, selectedCategory }) {
         <span>{category.total_category_worth}</span>
       </div>
       <div className="flex items-center gap-2">
-        <Button color="primary" size="sm">
+        <Button
+          color="primary"
+          size="sm"
+          onPress={() => navigate(`/editCategory/${category._id}`)}
+        >
           Edit
         </Button>
         <Button color="danger" size="sm">

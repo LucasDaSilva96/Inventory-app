@@ -13,6 +13,8 @@ import Charts from "./pages/Charts.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { getAllCategories, getAllItems } from "./utils/fetchData.js";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import AddNewCategoryForm from "./components/AddNewCategoryForm.jsx";
+import EditCategory from "./pages/EditCategory.jsx";
 
 const queryClient = new QueryClient();
 
@@ -51,6 +53,21 @@ const router = createBrowserRouter([
       {
         path: "chart",
         element: <Charts />,
+      },
+      {
+        path: "addCategory",
+        element: <AddNewCategoryForm />,
+      },
+      {
+        path: "editCategory/:_id",
+        element: <EditCategory />,
+        loader: async () => {
+          await queryClient.prefetchQuery({
+            queryKey: ["categories"],
+            queryFn: async () => await getAllCategories(),
+          });
+          return null;
+        },
       },
     ],
   },
