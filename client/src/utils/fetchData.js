@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 export const getAllCategories = async () => {
   // const toastId = toast.loading("Loading...");
   try {
-    const res = await axios.get(BASE_URL + "category/");
+    const res = await axios.get(BASE_URL + "categories");
     // toast.dismiss(toastId);
 
     return res.data.data || [];
@@ -18,7 +18,7 @@ export const getAllCategories = async () => {
 export const getAllItems = async () => {
   // const toastId = toast.loading("Loading...");
   try {
-    const res = await axios.get(BASE_URL + "items/");
+    const res = await axios.get(BASE_URL + "items");
     // toast.dismiss(toastId);
 
     return res.data.data || [];
