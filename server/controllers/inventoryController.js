@@ -114,7 +114,7 @@ exports.createNewItem = async (req, res, next) => {
     if (!category)
       throw new Error("No category doc found with the provided id");
 
-    category.items.push({ ...req.body });
+    category.items.push({ ...req.body, categoryRef: category._id });
 
     await category.save();
 

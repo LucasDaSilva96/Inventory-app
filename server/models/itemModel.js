@@ -40,6 +40,11 @@ const ItemSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  categoryRef: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "category",
+    required: [true, "A item must have a category id ref"],
+  },
 });
 
 module.exports = {
