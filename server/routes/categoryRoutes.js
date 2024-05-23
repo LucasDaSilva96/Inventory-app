@@ -13,8 +13,10 @@ const {
   getSpecificItem,
   deleteItem,
 } = require("../controllers/inventoryController");
+const { upload } = require("../utils/uploadImage");
 
 // ** Category
+
 router.get("/categories", getAllCategories);
 router.get("/categories/:id", getSpecificCategory);
 

@@ -2,6 +2,8 @@ const { CategoryModel } = require("../models/categoryModel");
 
 exports.createNewCategory = async (req, res, next) => {
   try {
+    const { image_url, ...rest } = req.body;
+
     const category = await CategoryModel.create({ ...req.body });
 
     res.status(201).json({
