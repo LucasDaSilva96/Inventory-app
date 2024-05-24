@@ -13,16 +13,26 @@ const {
   getSpecificItem,
   deleteItem,
 } = require("../controllers/inventoryController");
-const { upload } = require("../utils/uploadImage");
+const { upload, sendImagePathName } = require("../utils/uploadImage");
 
 // ** Category
 
 router.get("/categories", getAllCategories);
 router.get("/categories/:id", getSpecificCategory);
 
-router.post("/category/create", createNewCategory);
+router.post(
+  "/category/create",
+  upload.single("image_url"),
+  sendImagePathName,
+  createNewCategory
+);
 
-router.patch("/category/:id/update", updateCategory);
+router.patch(
+  "/category/:id/update",
+  upload.single("image_url"),
+  sendImagePathName,
+  updateCategory
+);
 
 router.delete("/category/:id/delete", deleteCategory);
 

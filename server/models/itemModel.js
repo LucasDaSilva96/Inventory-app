@@ -35,6 +35,9 @@ const ItemSchema = new mongoose.Schema({
     type: String,
     default: "https://placehold.co/400?text=Image&font=roboto",
   },
+  image_name: {
+    type: String,
+  },
 
   created_at: {
     type: Date,

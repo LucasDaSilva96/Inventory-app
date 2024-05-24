@@ -1,15 +1,37 @@
 const { CategoryModel } = require("../models/categoryModel");
+const { uploadImage, cloudinary } = require("../utils/uploadImage");
+const fs = require("fs");
 
 exports.createNewCategory = async (req, res, next) => {
   try {
-    const { image_url, ...rest } = req.body;
+    const uploadedImageName = req.uploadedImage;
 
-    const category = await CategoryModel.create({ ...req.body });
+    let image = null;
+    let imageName = null;
+    let createdCategory = null;
+
+    if (uploadedImageName) {
+      const { image_url, image_name } = await uploadImage(uploadedImageName);
+      image = image_url;
+      imageName = image_name;
+    }
+
+    if (image && imageName) {
+      createdCategory = await CategoryModel.create({
+        ...req.body,
+        image_url: image,
+        image_name: imageName,
+      });
+    } else {
+      createdCategory = await CategoryModel.create({
+        ...req.body,
+      });
+    }
 
     res.status(201).json({
       status: "success",
       message: "New Category successfully created",
-      data: category,
+      data: createdCategory,
     });
   } catch (e) {
     res.status(400).json({
@@ -62,10 +84,54 @@ exports.getSpecificCategory = async (req, res, next) => {
 exports.updateCategory = async (req, res, next) => {
   try {
     const { id } = req.params;
-
     if (!id) throw new Error("No id provided.");
 
     delete req.body._id;
+
+    const foundCategory = await CategoryModel.findById(id);
+
+    const uploadedImageName = req.uploadedImage;
+
+    let image = null;
+    let imageName = null;
+    let originalImageName = null;
+
+    if (uploadedImageName) {
+      const { image_url, image_name, image_original_name } = await uploadImage(
+        uploadedImageName
+      );
+      image = image_url;
+      imageName = image_name;
+      originalImageName = image_original_name;
+    }
+
+    if (image && imageName && originalImageName) {
+      if (
+        foundCategory.image_url !==
+        "https://placehold.co/400?text=Image&font=roboto"
+      ) {
+        await cloudinary.api.delete_resources([`${foundCategory.image_name}`], {
+          type: "upload",
+          resource_type: "image",
+        });
+        const directoryPath = `public/images/${originalImageName}`;
+
+        fs.unlink(directoryPath, (err) => {
+          if (err) {
+            console.error(`Error deleting file at ${directoryPath}:`, err);
+          }
+        });
+      }
+      await CategoryModel.findByIdAndUpdate(id, {
+        ...req.body,
+        image_url: image,
+        image_name: imageName,
+      });
+    } else {
+      await CategoryModel.findByIdAndUpdate(id, {
+        ...req.body,
+      });
+    }
 
     const category = await CategoryModel.findById(id);
     if (!category) throw new Error("No category find with the provided id");
