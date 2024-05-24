@@ -6,21 +6,26 @@ exports.createNewCategory = async (req, res, next) => {
   try {
     const uploadedImageName = req.uploadedImage;
 
-    let image = null;
-    let imageName = null;
-    let createdCategory = null;
+    let image,
+      imageName,
+      createdCategory,
+      originalImageName = null;
 
     if (uploadedImageName) {
-      const { image_url, image_name } = await uploadImage(uploadedImageName);
+      const { image_url, image_name, image_original_name } = await uploadImage(
+        uploadedImageName
+      );
       image = image_url;
       imageName = image_name;
+      originalImageName = image_original_name;
     }
 
-    if (image && imageName) {
+    if (image && imageName && originalImageName) {
       createdCategory = await CategoryModel.create({
         ...req.body,
         image_url: image,
         image_name: imageName,
+        image_original_name: originalImageName,
       });
     } else {
       createdCategory = await CategoryModel.create({
@@ -158,6 +163,24 @@ exports.deleteCategory = async (req, res, next) => {
 
     if (!id) throw new Error("No id provided.");
 
+    const category = await CategoryModel.findById(id);
+
+    if (
+      category.image_url !== "https://placehold.co/400?text=Image&font=roboto"
+    ) {
+      await cloudinary.api.delete_resources([`${category.image_name}`], {
+        type: "upload",
+        resource_type: "image",
+      });
+      const directoryPath = `public/images/${category.image_original_name}`;
+
+      fs.unlink(directoryPath, (err) => {
+        if (err) {
+          console.error(`Error deleting file at ${directoryPath}:`, err);
+        }
+      });
+    }
+
     await CategoryModel.findByIdAndDelete(id);
 
     res.status(200).json({
@@ -182,7 +205,32 @@ exports.createNewItem = async (req, res, next) => {
     if (!category)
       throw new Error("No category doc found with the provided id");
 
-    category.items.push({ ...req.body, categoryRef: category._id });
+    const uploadedImageName = req.uploadedImage;
+
+    let image = null;
+    let imageName = null;
+    let originalImageName = null;
+
+    if (uploadedImageName) {
+      const { image_url, image_name, image_original_name } = await uploadImage(
+        uploadedImageName
+      );
+      image = image_url;
+      imageName = image_name;
+      originalImageName = image_original_name;
+    }
+
+    if (image && imageName && originalImageName) {
+      category.items.push({
+        ...req.body,
+        categoryRef: category._id,
+        image_url: image,
+        image_name: imageName,
+        image_original_name: originalImageName,
+      });
+    } else {
+      category.items.push({ ...req.body, categoryRef: category._id });
+    }
 
     await category.save();
 
@@ -205,10 +253,23 @@ exports.updateItem = async (req, res, next) => {
     if (!id) throw new Error("No category-id provided");
     if (!product_code) throw new Error("No item product code provided");
 
+    const uploadedImageName = req.uploadedImage;
+
+    let image = null;
+    let imageName = null;
+
     const category = await CategoryModel.findById(id);
 
     if (!category)
       throw new Error("No category doc found with the provided id");
+
+    if (uploadedImageName) {
+      const { image_url, image_name, image_original_name } = await uploadImage(
+        uploadedImageName
+      );
+      image = image_url;
+      imageName = image_name;
+    }
 
     const itemIndex = category.items.findIndex(
       (el) => el.product_code === product_code
@@ -217,10 +278,41 @@ exports.updateItem = async (req, res, next) => {
     if (itemIndex < 0)
       throw new Error("No item found with the provided product code");
 
-    category.items[itemIndex] = {
-      ...category.items[itemIndex].toObject(),
-      ...req.body,
-    };
+    if (image && imageName) {
+      if (
+        category.items[itemIndex].toObject().image_url !==
+        "https://placehold.co/400?text=Image&font=roboto"
+      ) {
+        await cloudinary.api.delete_resources(
+          [`${category.items[itemIndex].toObject().image_name}`],
+          {
+            type: "upload",
+            resource_type: "image",
+          }
+        );
+        const directoryPath = `public/images/${
+          category.items[itemIndex].toObject().image_original_name
+        }`;
+
+        fs.unlink(directoryPath, (err) => {
+          if (err) {
+            console.error(`Error deleting file at ${directoryPath}:`, err);
+          }
+        });
+      }
+
+      category.items[itemIndex] = {
+        ...category.items[itemIndex].toObject(),
+        ...req.body,
+        image_url: image,
+        image_name: imageName,
+      };
+    } else {
+      category.items[itemIndex] = {
+        ...category.items[itemIndex].toObject(),
+        ...req.body,
+      };
+    }
 
     await category.save();
 

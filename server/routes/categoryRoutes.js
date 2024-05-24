@@ -40,9 +40,19 @@ router.delete("/category/:id/delete", deleteCategory);
 router.get("/items", getAllItems);
 router.get("/item/:id/:product_code", getSpecificItem);
 
-router.post("/item/:id/create", createNewItem);
+router.post(
+  "/item/:id/create",
+  upload.single("image_url"),
+  sendImagePathName,
+  createNewItem
+);
 
-router.patch("/item/:id/:product_code/update", updateItem);
+router.patch(
+  "/item/:id/:product_code/update",
+  upload.single("image_url"),
+  sendImagePathName,
+  updateItem
+);
 
 router.delete("/item/:id/:product_code/delete", deleteItem);
 

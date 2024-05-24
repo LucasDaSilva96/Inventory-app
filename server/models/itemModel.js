@@ -39,6 +39,10 @@ const ItemSchema = new mongoose.Schema({
     type: String,
   },
 
+  image_original_name: {
+    type: String,
+  },
+
   created_at: {
     type: Date,
     default: Date.now(),

@@ -26,6 +26,10 @@ const CategorySchema = new mongoose.Schema({
   image_name: {
     type: String,
   },
+
+  image_original_name: {
+    type: String,
+  },
   created_at: {
     type: Date,
     default: Date.now(),
