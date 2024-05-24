@@ -1,32 +1,14 @@
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  Divider,
-} from "@nextui-org/react";
+import { Button, Divider } from "@nextui-org/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Image } from "@nextui-org/react";
-import { FaCamera } from "react-icons/fa";
 import { createNewCategory } from "../utils/postData";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
-function AddNewCategoryForm({ isOpen, onOpenChange }) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const initialValue = {
-    title: "",
-    image: "https://placehold.co/400?text=Image&font=roboto",
-  };
+function AddNewCategoryForm() {
+  const { register } = useForm();
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -38,24 +20,39 @@ function AddNewCategoryForm({ isOpen, onOpenChange }) {
 
       setTimeout(() => {
         navigate("/inventory");
-      }, 500);
+      }, 700);
     },
   });
 
-  const [FORMDATA, SETFORMDATA] = useState(initialValue);
+  const [title, setTitle] = useState("");
+  const [file, setFile] = useState(null);
 
-  const handleCreateNewCategory = async (formData) => {
-    if (FORMDATA.title) {
-      mutation.mutate(FORMDATA);
-      onOpenChange();
+  const handleCreateNewCategory = async (e) => {
+    e.preventDefault();
+    if (title && file) {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("image_url", file);
+      mutation.mutate(formData);
+    } else if (title && !file) {
+      mutation.mutate({ title });
     } else {
       toast.error("No category title provided");
     }
+  };
 
-    SETFORMDATA(initialValue);
+  const handleImageChange = (e) => {
+    if (e.target.files[0]?.type && e.target.files[0].type.includes("image")) {
+      setFile(e.target.files[0]);
+    } else {
+      toast.error("The selected file is not an image");
+    }
   };
   return (
-    <section className="w-screen h-screen flex items-center justify-center">
+    <form
+      className="w-screen h-screen flex items-center justify-center"
+      onSubmit={handleCreateNewCategory}
+    >
       <div
         className="flex flex-col items-center gap-2"
         style={{
@@ -65,21 +62,39 @@ function AddNewCategoryForm({ isOpen, onOpenChange }) {
         }}
       >
         <div className="flex flex-col gap-2">
-          <Image
-            loading="lazy"
-            isBlurred
-            width={200}
-            height={200}
-            alt="NextUI hero Image with delay"
-            src={FORMDATA.image}
-          />
-          <Button color="primary" endContent={<FaCamera />}>
-            Upload image
-          </Button>
+          {file ? (
+            <Image
+              loading="lazy"
+              isBlurred
+              width={200}
+              height={200}
+              alt="image"
+              src={URL.createObjectURL(file)}
+            />
+          ) : (
+            <Image
+              loading="lazy"
+              isBlurred
+              width={200}
+              height={200}
+              alt="image"
+              src={"https://placehold.co/400?text=Image&font=roboto"}
+            />
+          )}
         </div>
+        <input
+          onChange={handleImageChange}
+          type="file"
+          accept="image/png, image/jpeg"
+          name="image_url"
+          style={{
+            width: "300px",
+            overflow: "hidden",
+            alignSelf: "end",
+          }}
+        />
         <Divider />
-        <form
-          onSubmit={handleSubmit(handleCreateNewCategory)}
+        <div
           style={{
             padding: "10px 0",
             display: "flex",
@@ -88,8 +103,8 @@ function AddNewCategoryForm({ isOpen, onOpenChange }) {
           }}
         >
           <input
-            value={FORMDATA.title}
-            onInput={(e) => SETFORMDATA({ ...FORMDATA, title: e.target.value })}
+            value={title}
+            onInput={(e) => setTitle(e.target.value)}
             style={{
               border: "1px solid #000",
               padding: "5px",
@@ -98,20 +113,20 @@ function AddNewCategoryForm({ isOpen, onOpenChange }) {
             name="title"
             {...register("title", { required: true })}
           />
-          {errors.title && <p>This field is required</p>}
+          {!title && <p>This field is required</p>}
           <Button
             type="submit"
-            color={errors.title ? "danger" : "success"}
-            disabled={Boolean(errors.title)}
+            color={!title ? "danger" : "success"}
+            disabled={Boolean(!title)}
           >
-            {errors.title ? "Invalid" : "Add"}
+            {!title ? "Invalid" : "Add"}
           </Button>
-        </form>
+        </div>
         <Button color="warning" onPress={() => navigate("/inventory")}>
           Cancel
         </Button>
       </div>
-    </section>
+    </form>
   );
 }
 

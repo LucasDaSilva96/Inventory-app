@@ -15,6 +15,8 @@ import { getAllCategories, getAllItems } from "./utils/fetchData.js";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import AddNewCategoryForm from "./components/AddNewCategoryForm.jsx";
 import EditCategory from "./pages/EditCategory.jsx";
+import DeleteCategory from "./pages/DeleteCategory.jsx";
+import CreateItem from "./pages/CreateItem.jsx";
 
 const queryClient = new QueryClient();
 
@@ -61,6 +63,28 @@ const router = createBrowserRouter([
       {
         path: "editCategory/:_id",
         element: <EditCategory />,
+        loader: async () => {
+          await queryClient.prefetchQuery({
+            queryKey: ["categories"],
+            queryFn: async () => await getAllCategories(),
+          });
+          return null;
+        },
+      },
+      {
+        path: "deleteCategory/:id",
+        element: <DeleteCategory />,
+        loader: async () => {
+          await queryClient.prefetchQuery({
+            queryKey: ["categories"],
+            queryFn: async () => await getAllCategories(),
+          });
+          return null;
+        },
+      },
+      {
+        path: "createItem",
+        element: <CreateItem />,
         loader: async () => {
           await queryClient.prefetchQuery({
             queryKey: ["categories"],

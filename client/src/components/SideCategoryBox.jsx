@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 function SideCategoryBox({ category, setSelectedCategory, selectedCategory }) {
   const navigate = useNavigate();
+
   return (
     <article
       onClick={() => setSelectedCategory(category)}
@@ -65,7 +66,11 @@ function SideCategoryBox({ category, setSelectedCategory, selectedCategory }) {
         >
           Edit
         </Button>
-        <Button color="danger" size="sm">
+        <Button
+          color="danger"
+          size="sm"
+          onPress={() => navigate(`/deleteCategory/${category._id}`)}
+        >
           Delete
         </Button>
       </div>

@@ -22,8 +22,10 @@ import { SearchIcon } from "./SearchIcon";
 import { IoEyeSharp } from "react-icons/io5";
 import { RiEditFill } from "react-icons/ri";
 import { MdDelete } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
-export default function DashboardItemsTable({ data }) {
+export default function DashboardItemsTable({ data, categories }) {
   const [page, setPage] = React.useState(1);
   const [filterValue, setFilterValue] = React.useState("");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -31,6 +33,16 @@ export default function DashboardItemsTable({ data }) {
     column: "item_amount",
     direction: "ascending",
   });
+
+  const navigate = useNavigate();
+
+  const handleNavigateToCreateNewItem = () => {
+    if (categories.length > 0) {
+      navigate("/createItem");
+    } else {
+      toast.error("You need to create a category first");
+    }
+  };
 
   const hasSearchFilter = Boolean(filterValue);
 
@@ -222,7 +234,11 @@ export default function DashboardItemsTable({ data }) {
               </DropdownMenu>
             </Dropdown>
 
-            <Button color="primary" endContent={<IoAddOutline />}>
+            <Button
+              color="primary"
+              onPress={handleNavigateToCreateNewItem}
+              endContent={<IoAddOutline />}
+            >
               ADD NEW ITEM
             </Button>
           </div>

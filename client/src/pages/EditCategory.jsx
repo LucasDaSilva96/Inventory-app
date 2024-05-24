@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { Input } from "@nextui-org/react";
 import toast from "react-hot-toast";
+import { createNewItem, updateCategory } from "../utils/postData";
 
 function EditCategory() {
   const { _id } = useParams();
@@ -15,15 +16,32 @@ function EditCategory() {
 
   const navigate = useNavigate();
 
-  const [file, setFile] = useState(CATEGORY.image_url);
+  const [file, setFile] = useState(null);
+  const [title, setTitle] = useState("");
 
   const handleImageChange = (e) => {
     if (e.target.files[0]?.type && e.target.files[0].type.includes("image")) {
-      setFile(URL.createObjectURL(e.target.files[0]));
+      setFile(e.target.files[0]);
     } else {
       toast.error("The selected file is not an image");
     }
-    console.log(e.target.files[0]);
+  };
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    if (title && title !== CATEGORY.title && file) {
+      formData.append("title", title);
+      formData.append("image_url", file, navigate);
+      await updateCategory(formData, _id);
+    } else if (title && title !== CATEGORY.title) {
+      formData.append("title", title);
+      await updateCategory(formData, _id, navigate);
+    } else if (!title && file) {
+      formData.append("image_url", file);
+      await updateCategory(formData, _id, navigate);
+    } else {
+      navigate("/inventory");
+    }
   };
 
   return (
@@ -42,23 +60,37 @@ function EditCategory() {
               <small className="text-default-500">
                 {CATEGORY.items.length}
               </small>
-              <h4 className="font-bold text-large">{CATEGORY.title}</h4>
+              <h4 className="font-bold text-large">
+                {title || CATEGORY.title}
+              </h4>
             </CardHeader>
             <CardBody className="overflow-visible py-2">
-              <Image
-                style={{ borderRadius: "10px" }}
-                loading="lazy"
-                isBlurred
-                alt={CATEGORY.title}
-                className="object-cover rounded-xl"
-                src={file}
-                width={280}
-              />
+              {file ? (
+                <Image
+                  style={{ borderRadius: "10px" }}
+                  loading="lazy"
+                  isBlurred
+                  alt={CATEGORY.title}
+                  className="object-cover rounded-xl"
+                  src={URL.createObjectURL(file)}
+                  width={280}
+                />
+              ) : (
+                <Image
+                  style={{ borderRadius: "10px" }}
+                  loading="lazy"
+                  isBlurred
+                  alt={CATEGORY.title}
+                  className="object-cover rounded-xl"
+                  src={CATEGORY.image_url}
+                  width={280}
+                />
+              )}
               <input
                 type="file"
                 onChange={handleImageChange}
                 name="image_url"
-                accept=".png, .jpg"
+                accept="image/png, image/jpeg"
                 style={{
                   padding: "10px 0",
                   maxWidth: "200px",
@@ -76,12 +108,16 @@ function EditCategory() {
                 <Input
                   type="text"
                   label="Title"
-                  value={CATEGORY.title}
-                  onInput={(e) =>
-                    SETCATEGORY({ ...CATEGORY, title: e.target.value })
-                  }
+                  value={title}
+                  defaultValue={CATEGORY.title}
+                  onInput={(e) => setTitle(e.target.value)}
                 />
-                <Button color="success">Save</Button>
+                <Button
+                  color="success"
+                  onClick={async () => await handleSubmit()}
+                >
+                  Save
+                </Button>
                 <Button color="danger" onPress={() => navigate("/inventory")}>
                   Cancel
                 </Button>
