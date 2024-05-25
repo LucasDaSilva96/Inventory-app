@@ -1,6 +1,6 @@
 # Inventory Management App
 
-[![Preview Video](https://youtu.be/V2JS_dRl_uY)](https://www.youtube.com/watch?v=V2JS_dRl_uY&t=16s&ab_channel=LucasDaSilva)
+[![Preview Video](https://www.youtube.com/watch?v=V2JS_dRl_uY&t=16s&ab_channel=LucasDaSilva)](https://www.youtube.com/watch?v=V2JS_dRl_uY&t=16s&ab_channel=LucasDaSilva)
 
 ## Introduction
 
