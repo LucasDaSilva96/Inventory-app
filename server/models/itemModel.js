@@ -20,13 +20,11 @@ const ItemSchema = new mongoose.Schema({
     required: [true, "A item must have a price"],
   },
 
-  //TODO
   item_amount: {
     type: Number,
     default: 0,
   },
 
-  // TODO
   total_item_worth: {
     type: Number,
     default: 0,

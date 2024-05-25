@@ -36,6 +36,23 @@ const CategorySchema = new mongoose.Schema({
   },
 });
 
+CategorySchema.pre("save", function (next) {
+  const totalItemsQuantity = this.items.reduce((accumulator, item) => {
+    return (accumulator += item.item_amount);
+  }, 0);
+
+  let totalCategoryWorth = 0;
+
+  this.items.forEach((element) => {
+    totalCategoryWorth += element.price * element.item_amount;
+  });
+
+  this.category_items_amount = totalItemsQuantity;
+  this.total_category_worth = totalCategoryWorth;
+
+  next();
+});
+
 const CategoryModel = mongoose.model("category", CategorySchema);
 
 module.exports = {

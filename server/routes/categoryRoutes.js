@@ -12,6 +12,7 @@ const {
   getAllItems,
   getSpecificItem,
   deleteItem,
+  getStats,
 } = require("../controllers/inventoryController");
 const { upload, sendImagePathName } = require("../utils/uploadImage");
 
@@ -55,5 +56,7 @@ router.patch(
 );
 
 router.delete("/item/:id/:product_code/delete", deleteItem);
+
+router.get("/stats", getStats);
 
 module.exports = router;

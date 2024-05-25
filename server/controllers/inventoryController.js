@@ -231,6 +231,11 @@ exports.createNewItem = async (req, res, next) => {
     } else {
       category.items.push({ ...req.body, categoryRef: category._id });
     }
+    const itemWorth =
+      category.items[category.items.length - 1].item_amount *
+      category.items[category.items.length - 1].price;
+
+    category.items[category.items.length - 1].total_item_worth = itemWorth;
 
     await category.save();
 
@@ -313,6 +318,12 @@ exports.updateItem = async (req, res, next) => {
         ...req.body,
       };
     }
+
+    const itemWorth =
+      category.items[itemIndex].toObject().item_amount *
+      category.items[itemIndex].toObject().price;
+
+    category.items[itemIndex].total_item_worth = itemWorth;
 
     await category.save();
 
@@ -402,6 +413,33 @@ exports.deleteItem = async (req, res, next) => {
       status: "success",
       message: "Item successfully deleted",
       data: category.items,
+    });
+  } catch (e) {
+    res.status(400).json({
+      status: "fail",
+      message: e.message,
+    });
+  }
+};
+
+exports.getStats = async (req, res, next) => {
+  try {
+    const ITEMS = [];
+    const CATEGORIES = [];
+
+    const categories = await CategoryModel.find();
+
+    categories.forEach((category) => {
+      CATEGORIES.push(category);
+      category.items.forEach((item) => ITEMS.push(item));
+    });
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        items: ITEMS,
+        categories: CATEGORIES,
+      },
     });
   } catch (e) {
     res.status(400).json({
