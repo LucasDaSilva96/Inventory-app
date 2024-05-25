@@ -1,6 +1,6 @@
 # Inventory Management App
 
-[Preview Video](https://youtu.be/V2JS_dRl_uY)
+[![Preview Video](https://youtu.be/V2JS_dRl_uY)](https://www.youtube.com/watch?v=V2JS_dRl_uY&t=16s&ab_channel=LucasDaSilva)
 
 ## Introduction
 
@@ -39,13 +39,13 @@ To run this project locally, follow these steps:
 
 2. **Install dependencies:**
 
-```bash
-cd client
-npm install
-cd ../server
-npm install
+   ```bash
+   cd client
+   npm install
+   cd ../server
+   npm install
 
-```
+   ```
 
 3. **Set up environment variables / Front-End:**
    Create a .env file in the client folder and add your base api url,
@@ -54,28 +54,28 @@ npm install
 4. **Set up environment variables / Back-End:**
    Create a .env file in the server folder and add the following environment variables:
 
-```plaintext
- CLOUD_NAME=your_cloud_name
- API_KEY=your_api_key
- API_SECRET=your_api_secret
- CLOUDINARY_URL= your cloudinary project url
- DB=your_mongodb_uri
- PORT=your port for the server
-```
+   ```plaintext
+   CLOUD_NAME=your_cloud_name
+   API_KEY=your_api_key
+   API_SECRET=your_api_secret
+   CLOUDINARY_URL= your cloudinary project url
+   DB=your_mongodb_uri
+   PORT=your port for the server
+   ```
 
 5. **Start the server**:
 
-```bash
-cd server
-npm run dev
-```
+   ```bash
+   cd server
+   npm run dev
+   ```
 
 6. **Start the client**:
 
-```bash
-cd client
-npm run dev
-```
+   ```bash
+   cd client
+   npm run dev
+   ```
 
 ## Conclusion
 
