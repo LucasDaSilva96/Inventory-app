@@ -27,3 +27,13 @@ export const getAllItems = async () => {
     toast.error(e.response.data.message);
   }
 };
+
+export const getStats = async () => {
+  try {
+    const req = await axios.get(BASE_URL + "stats");
+
+    return req.data.data;
+  } catch (e) {
+    toast.error(e.response.data.message);
+  }
+};

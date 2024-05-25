@@ -11,12 +11,14 @@ import Dashboard from "./pages/Dashboard.jsx";
 import { Toaster } from "react-hot-toast";
 import Charts from "./pages/Charts.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { getAllCategories, getAllItems } from "./utils/fetchData.js";
+import { getAllCategories, getAllItems, getStats } from "./utils/fetchData.js";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import AddNewCategoryForm from "./components/AddNewCategoryForm.jsx";
 import EditCategory from "./pages/EditCategory.jsx";
 import DeleteCategory from "./pages/DeleteCategory.jsx";
 import CreateItem from "./pages/CreateItem.jsx";
+import DeleteItem from "./pages/DeleteItem.jsx";
+import EditItem from "./pages/EditItem.jsx";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +57,13 @@ const router = createBrowserRouter([
       {
         path: "chart",
         element: <Charts />,
+        loader: async () => {
+          await queryClient.prefetchQuery({
+            queryKey: ["stats"],
+            queryFn: async () => await getStats(),
+          });
+          return null;
+        },
       },
       {
         path: "addCategory",
@@ -89,6 +98,28 @@ const router = createBrowserRouter([
           await queryClient.prefetchQuery({
             queryKey: ["categories"],
             queryFn: async () => await getAllCategories(),
+          });
+          return null;
+        },
+      },
+      {
+        path: "deleteItem/:id",
+        element: <DeleteItem />,
+        loader: async () => {
+          await queryClient.prefetchQuery({
+            queryKey: ["items"],
+            queryFn: async () => await getAllItems(),
+          });
+          return null;
+        },
+      },
+      {
+        path: "editItem/:_id",
+        element: <EditItem />,
+        loader: async () => {
+          await queryClient.prefetchQuery({
+            queryKey: ["items"],
+            queryFn: async () => await getAllItems(),
           });
           return null;
         },
@@ -137,7 +168,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           />
         </Provider>
       </NextUIProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   </React.StrictMode>
 );

@@ -69,3 +69,53 @@ export const deleteCategory = async (id, navigate) => {
     toast.error(e.response.data.message);
   }
 };
+
+export const deleteItem = async (categoryID, itemProductCode, navigate) => {
+  const toastId = toast.loading("Loading...");
+  try {
+    if (!categoryID || !itemProductCode) {
+      toast.error("No id or product code provided");
+      return;
+    }
+
+    await axios.delete(
+      BASE_URL + `item/${categoryID}/${itemProductCode}/delete`
+    );
+
+    toast.dismiss(toastId);
+    toast.success("Item successfully deleted");
+    if (navigate) navigate(-1);
+  } catch (e) {
+    toast.dismiss(toastId);
+    toast.error(e.response.data.message);
+  }
+};
+
+export const updateItem = async (
+  categoryID,
+  itemProductCode,
+  data,
+  navigate
+) => {
+  const toastId = toast.loading("Loading...");
+  try {
+    if (!categoryID || !itemProductCode) {
+      toast.error("No id or product code provided");
+      return;
+    }
+    const config = { headers: { "Content-Type": "multipart/form-data" } };
+
+    await axios.patch(
+      BASE_URL + `item/${categoryID}/${itemProductCode}/update`,
+      data,
+      config
+    );
+
+    toast.dismiss(toastId);
+    toast.success("Item successfully updated");
+    if (navigate) navigate("/");
+  } catch (e) {
+    toast.dismiss(toastId);
+    toast.error(e.response.data.message);
+  }
+};

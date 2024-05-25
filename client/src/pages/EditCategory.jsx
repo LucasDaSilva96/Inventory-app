@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { Input } from "@nextui-org/react";
 import toast from "react-hot-toast";
-import { createNewItem, updateCategory } from "../utils/postData";
+import { updateCategory } from "../utils/postData";
 
 function EditCategory() {
   const { _id } = useParams();
@@ -31,7 +31,7 @@ function EditCategory() {
     const formData = new FormData();
     if (title && title !== CATEGORY.title && file) {
       formData.append("title", title);
-      formData.append("image_url", file, navigate);
+      formData.append("image_url", file);
       await updateCategory(formData, _id);
     } else if (title && title !== CATEGORY.title) {
       formData.append("title", title);
@@ -45,7 +45,10 @@ function EditCategory() {
   };
 
   return (
-    <section className="flex w-screen h-screen items-center justify-center">
+    <section
+      className="flex w-screen h-screen items-center justify-center overflow-y-auto"
+      style={{ paddingBottom: "60px" }}
+    >
       {CATEGORY ? (
         <div
           style={{

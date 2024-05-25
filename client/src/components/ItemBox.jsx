@@ -7,12 +7,15 @@ import { Button } from "@nextui-org/react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 function ItemBox({ item }) {
   const [state, setState] = useState({
     value: item.product_code,
     copied: false,
   });
+
+  const navigate = useNavigate();
 
   return (
     <Card className="py-4" shadow="md">
@@ -98,8 +101,18 @@ function ItemBox({ item }) {
         </p>
 
         <div className="flex flex-wrap gap-4 items-center justify-between py-2">
-          <Button color="primary">Edit</Button>
-          <Button color="danger">Delete</Button>
+          <Button
+            color="primary"
+            onPress={() => navigate(`/editItem/${item._id}`)}
+          >
+            Edit
+          </Button>
+          <Button
+            color="danger"
+            onPress={() => navigate(`/deleteItem/${item._id}`)}
+          >
+            Delete
+          </Button>
         </div>
       </CardBody>
     </Card>

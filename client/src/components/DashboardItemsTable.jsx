@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableHeader,
@@ -16,6 +16,7 @@ import {
   DropdownMenu,
   DropdownItem,
   Avatar,
+  useDisclosure,
 } from "@nextui-org/react";
 import { IoAddOutline, IoChevronDownCircleOutline } from "react-icons/io5";
 import { SearchIcon } from "./SearchIcon";
@@ -24,8 +25,9 @@ import { RiEditFill } from "react-icons/ri";
 import { MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import ItemDetailsModal from "./ItemDetailsModal";
 
-export default function DashboardItemsTable({ data, categories }) {
+export default function DashboardItemsTable({ data, categories, onOpen }) {
   const [page, setPage] = React.useState(1);
   const [filterValue, setFilterValue] = React.useState("");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -34,7 +36,10 @@ export default function DashboardItemsTable({ data, categories }) {
     direction: "ascending",
   });
 
+  const { isOpen, onOpen: ON_OPEN, onOpenChange } = useDisclosure();
+
   const navigate = useNavigate();
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const handleNavigateToCreateNewItem = () => {
     if (categories.length > 0) {
@@ -160,17 +165,29 @@ export default function DashboardItemsTable({ data, categories }) {
         return (
           <div className="relative flex items-center gap-4">
             <Tooltip content="Details" color="primary">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+              <span
+                className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                onClick={() => {
+                  setSelectedItem(data);
+                  ON_OPEN();
+                }}
+              >
                 <IoEyeSharp color="#006FEE" />
               </span>
             </Tooltip>
             <Tooltip content="Edit item" color="warning">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+              <span
+                className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                onClick={() => navigate(`editItem/${data._id}`)}
+              >
                 <RiEditFill color="#f5a524" />
               </span>
             </Tooltip>
             <Tooltip color="danger" content="Delete item">
-              <span className="text-lg text-danger cursor-pointer active:opacity-50">
+              <span
+                className="text-lg text-danger cursor-pointer active:opacity-50"
+                onClick={() => navigate(`deleteItem/${data._id}`)}
+              >
                 <MdDelete />
               </span>
             </Tooltip>
@@ -316,6 +333,14 @@ export default function DashboardItemsTable({ data, categories }) {
           )}
         </TableBody>
       </Table>
+      {selectedItem && (
+        <ItemDetailsModal
+          item={selectedItem}
+          isOpen={isOpen}
+          onOpen={ON_OPEN}
+          onOpenChange={onOpenChange}
+        />
+      )}
     </aside>
   );
 }

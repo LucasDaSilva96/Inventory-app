@@ -74,20 +74,23 @@ function CreateItem() {
   };
 
   return (
-    <section className="w-screen h-screen flex py-2 justify-center overflow-hidden">
+    <section className="w-screen h-screen flex py-2 justify-center overflow-y-scroll">
       <form
         onSubmit={handleSubmit}
         style={{
           minWidth: "475px",
           maxWidth: "600px",
-          height: "800px",
+          maxHeight: "600px",
+          overflowY: "auto",
           boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
           borderRadius: "10px",
-          padding: "10px",
+          paddingBottom: "40px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "space-evenly",
+          padding: "10px 0",
+          gap: "10px",
         }}
       >
         {!file ? (
@@ -112,6 +115,10 @@ function CreateItem() {
           accept="image/png, image/jpeg"
           name="image_url"
           onChange={handleImageChange}
+          style={{
+            padding: "30px 0",
+            maxWidth: "200px",
+          }}
         />
         <Input
           name="title"
@@ -136,6 +143,7 @@ function CreateItem() {
         />
 
         <Input
+          min={0}
           name="price"
           isRequired
           type="number"
@@ -147,12 +155,13 @@ function CreateItem() {
           }
         />
         <Input
+          min={0}
           name="item_amount"
           isRequired
           type="number"
           label="Amount of items"
           className="max-w-xs"
-          value={itemModel.price}
+          value={itemModel.item_amount}
           onInput={(e) =>
             setItemModel({ ...itemModel, item_amount: Number(e.target.value) })
           }

@@ -1,19 +1,21 @@
 import { useParams } from "react-router-dom";
 import { Button, Divider } from "@nextui-org/react";
 import { Image } from "@nextui-org/react";
-import { deleteCategory } from "../utils/postData";
+import { deleteItem } from "../utils/postData";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-function DeleteCategory() {
+
+function DeleteItem() {
   const { id } = useParams();
 
   const queryClient = useQueryClient();
-  const categories = queryClient.getQueryData(["categories"]);
-  const CATEGORY = categories.find((el) => el._id === id);
+  const items = queryClient.getQueryData(["items"]);
+  const ITEM = items.find((el) => el._id === id);
   const navigate = useNavigate();
 
   const mutation = useMutation({
-    mutationFn: async () => await deleteCategory(id, navigate),
+    mutationFn: async () =>
+      await deleteItem(ITEM.categoryRef, ITEM.product_code, navigate),
     onSuccess: () => {
       queryClient.invalidateQueries();
     },
@@ -26,7 +28,7 @@ function DeleteCategory() {
   };
 
   return (
-    <div className="w-screen h-screen flex overflow-y-auto justify-center">
+    <div className="w-screen h-screen flex items-center justify-center">
       <div
         className="flex flex-col items-center gap-2"
         style={{
@@ -41,27 +43,28 @@ function DeleteCategory() {
             textDecoration: "underline",
           }}
         >
-          Delete Category
+          Delete Item
         </h1>
         <h2
           style={{
             fontSize: "26px",
           }}
         >
-          {CATEGORY.title}
+          {ITEM.title}
         </h2>
         <div className="flex flex-col">
-          <small>Amount of items: {CATEGORY.items.length}</small>
-          <small>Category worth: {CATEGORY.total_category_worth}</small>
+          <small>Amount of items: {ITEM.item_amount}</small>
+          <small>Item worth: {ITEM.total_item_worth}</small>
         </div>
         <Divider />
         <div className="flex flex-col gap-2">
           <Image
             loading="lazy"
             isBlurred
-            width={280}
-            alt={CATEGORY.title}
-            src={CATEGORY.image_url}
+            width={400}
+            height={400}
+            alt={ITEM.title}
+            src={ITEM.image_url}
           />
         </div>
 
@@ -85,11 +88,7 @@ function DeleteCategory() {
           <Button size="lg" color="danger" onPress={handleDelete}>
             Delete
           </Button>
-          <Button
-            size="lg"
-            color="primary"
-            onPress={() => navigate("/inventory")}
-          >
+          <Button size="lg" color="primary" onPress={() => navigate(-1)}>
             Cancel
           </Button>
         </div>
@@ -98,4 +97,4 @@ function DeleteCategory() {
   );
 }
 
-export default DeleteCategory;
+export default DeleteItem;
